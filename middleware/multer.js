@@ -14,6 +14,9 @@ const saving = multer.diskStorage({
     filename: (req, file, callback) => {
         const name = file.originalname.split(".")[0].split(' ').join('_');
         const extension = MINE_TYPES[file.mimetype];
+        if (extension!="jpg" && extension!="jpeg" && extension!="png" && extension!="webp" && extension!="gif") {
+            req.body.errorMessage = "Le format de l'image n'est pas celui attendu";
+        } 
         callback(null, name + Date.now() + '.' + extension);
     }
 });

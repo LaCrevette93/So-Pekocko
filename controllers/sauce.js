@@ -12,19 +12,21 @@ exports.createSauce = (req,res,next) => {
         usersDisliked: [],
         imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
-    sauce.save()
-    .then(() => { 
-        res.status(201).json({ message: 'La sauce a été créée avec succès!' }); 
-    })
-    .catch((error) => {
-        if (error.message.indexOf("to be unique") > -1) {
-            res.status(400).json({ message: "La sauce existe déjà!"});
-            fs.unlink(`images/${req.file.filename}`, () => {
-                console.log("Image supprimée car la requête ne correspond pas aux informations attendues")
-            });
-        }
+    if (!req.body.errorMessage) {
+        sauce.save()
+        .then(() => { 
+            res.status(201).json({ message: 'La sauce a été créée avec succès!' }); 
+        })
+        .catch((error) => {
+            if (error.message.indexOf("to be unique") > -1) {
+                res.status(400).json({ message: "La sauce existe déjà!"});
+                fs.unlink(`images/${req.file.filename}`, () => {
+                    console.log("Image supprimée car la requête ne correspond pas aux informations attendues")
+                });
+            }
         res.status(500).json({message:error});
-    })
+        })
+    }
 };
 
 exports.allSauces = (req,res,next) => {

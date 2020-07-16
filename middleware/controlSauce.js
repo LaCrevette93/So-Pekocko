@@ -4,7 +4,7 @@ const { Console } = require('console');
 const expRegex = {
     name: "^[^\\s][a-zA-Zéèàêûçàôë\\s-]{2,40}$",
     manufacturer: "^[^\\s][a-zA-Zéèàêûçàôë'\\s-]{2,25}$",
-    description: "^[^\\s][a-zA-Zéèàêûçàôëî.',!\\s-]{10,1000}$",
+    description: "^[^\\s][a-zA-Zéèàêûçàôëî.':,!\\s-]{10,1000}$",
     mainPepper: "^[^\\s][a-zA-Zéèàêûçàôë',\\s-]{2,45}$",
     };
 
@@ -24,8 +24,8 @@ module.exports = (req,res,next) => {
             error400 = true;
         }
     }
-    if (error400 == true) {
-        res.status(400).json({ message: "Un problème est survenu sur le(s) champ(s) suivant(s)" + error });
+    if (error400 == true || req.body.errorMessage) {
+        res.status(400).json({ message: "Un problème est survenu sur le(s) champ(s) suivant(s)" + error + " " + req.body.errorMessage + "!"});
         fs.unlink(`images/${req.file.filename}`, () => {
             console.log("Image supprimée car la requête ne correspond pas aux informations attendues")
         });
