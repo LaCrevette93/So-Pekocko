@@ -1,12 +1,13 @@
 const bcrypt = require('bcrypt');
 const token = require('jsonwebtoken');
+const maskEmail = require('nodejs-base64-encode');
 const User = require('../models/user');
 
 exports.signup = (req,res,next) => { 
     bcrypt.hash(req.body.password,10)
     .then(hash => {
         const user = new User ({
-            email: req.body.email,
+            email: maskEmail.encode(req.body.email, 'base64'),
             password: hash
         });
         user.save()
@@ -23,7 +24,7 @@ exports.signup = (req,res,next) => {
 };
 
 exports.login = (req,res,next) => {
-    User.findOne({email:req.body.email})
+    User.findOne({email: maskEmail.encode(req.body.email, 'base64')})
     .then(user => {
         if(!user) {
             return res.status(401).json({message:"Cette adresse email n'existe pas!"})
