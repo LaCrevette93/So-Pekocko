@@ -11,6 +11,6 @@ module.exports = (req,res,next) => {
             next();
         }
     } catch {
-        res.status(401).json({error: 'Invalid request!'});
+        res.status(401).json({error: 'Token expiré!'});
     }
 }

@@ -1,5 +1,4 @@
 const fs = require('fs');
-const { Console } = require('console');
 
 const expRegex = {
     name: "^[^\\s][a-zA-Zéèàêûçàôë\\s-]{2,40}$",
@@ -16,7 +15,6 @@ module.exports = (req,res,next) => {
     } else {
         sauceObject = {...req.body};
     }
-    console.log(sauceObject);
     for (let key in expRegex) {
         const pattern = new RegExp(expRegex[key]);
         if (pattern.test(sauceObject[key]) == false) {

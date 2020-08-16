@@ -101,7 +101,7 @@ exports.modifyLikeSauce = (req, res, next) => {
             dislikes: sauce.dislikes,
             usersDisliked: sauce.usersDisliked,
             usersLiked: sauce.usersLiked}})
-            .then(() => res.status(200).json({ message}))
+            .then(() => res.status(200).json({ message }))
             .catch(error => res.status(400).json({ error: req.body.message }));
     })
     .catch(error => res.status(400).json({ error: "Une erreur est survenue lors de l'analyse des données!" }));
